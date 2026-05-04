@@ -5,3 +5,4 @@ drf-spectacular
 dj-database-url
 gunicorn
 whitenoise
+psycopg[binary]
