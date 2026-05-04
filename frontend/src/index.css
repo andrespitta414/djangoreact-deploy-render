@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ocde-blue: #1b4f72;
+  --ocde-green: #145a32;
+  --ocde-amber: #fbbf24;
+  --ocde-red: #ef4444;
+  --ocde-surface: #f8fafc;
+  --ocde-ink: #0f172a;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ocde-ink);
+  background:
+    radial-gradient(circle at top left, rgba(20, 90, 50, 0.15), transparent 28%),
+    radial-gradient(circle at top right, rgba(27, 79, 114, 0.2), transparent 30%),
+    linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}

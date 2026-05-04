@@ -1,0 +1,7 @@
+Django
+django-cors-headers
+djangorestframework
+drf-spectacular
+dj-database-url
+gunicorn
+whitenoise
