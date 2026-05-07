@@ -1,3 +1,4 @@
+import { EvidenceGallery } from "@/components/EvidenceGallery";
 import { StatusBadge } from "@/components/StatusBadge";
 import { useReports } from "@/hooks/useReports";
 import { formatDate } from "@/lib/utils";
@@ -46,6 +47,12 @@ export function CitizenTrackingPage() {
                       </div>
                     ))}
                   </div>
+                </div>
+              </div>
+              <div className="mt-5 rounded-3xl bg-white p-4">
+                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Evidencia adjunta</p>
+                <div className="mt-4">
+                  <EvidenceGallery assets={report.images} />
                 </div>
               </div>
             </article>

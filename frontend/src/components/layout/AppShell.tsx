@@ -8,12 +8,12 @@ import type { ReactNode } from "react";
 export function AppShell({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const isAdmin = location.pathname.startsWith("/admin");
+  const isAdmin = location.pathname === "/dashboard" || location.pathname.startsWith("/admin");
   const navItems = isAdmin ? adminNav : citizenNav;
-  const moduleHome = isAdmin ? "/admin/dashboard" : "/citizen/new-report";
+  const moduleHome = isAdmin ? "/dashboard" : "/new-report";
   const secondaryAction = isAdmin
     ? { label: "Banco", path: "/admin/reports", icon: LayoutGrid }
-    : { label: "Seguimiento", path: "/citizen/tracking", icon: Compass };
+    : { label: "Seguimiento", path: "/tracking", icon: Compass };
   const sectionTitle = isAdmin ? "Centro de control ambiental" : "Recepcion y seguimiento";
   const sectionDescription = isAdmin
     ? "Vista compacta para analisis, banco y monitoreo institucional."

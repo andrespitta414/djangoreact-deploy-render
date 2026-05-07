@@ -18,14 +18,13 @@ export function Modal({ title, subtitle, open, onClose, children, size = "lg", s
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/55 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/55 p-3 backdrop-blur-sm sm:p-4">
       <div
         className={cn(
-          "w-full rounded-3xl bg-white p-5 shadow-panel md:p-6",
-          size === "md" && "max-w-2xl",
-          size === "lg" && "max-w-4xl",
-          size === "xl" && "max-w-6xl",
-          scrollable && "max-h-[88vh] overflow-hidden"
+          "my-3 w-full max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-3xl bg-white p-4 shadow-panel sm:my-4 sm:max-w-[calc(100vw-2rem)] md:p-6",
+          size === "md" && "md:max-w-2xl",
+          size === "lg" && "md:max-w-4xl",
+          size === "xl" && "md:max-w-5xl"
         )}
       >
         <div className="mb-4 flex items-start justify-between gap-4">
@@ -41,7 +40,7 @@ export function Modal({ title, subtitle, open, onClose, children, size = "lg", s
             <X size={18} />
           </button>
         </div>
-        <div className={cn(scrollable && "max-h-[calc(88vh-92px)] overflow-y-auto pr-1")}>{children}</div>
+        <div className={cn("max-h-[calc(100vh-8rem)] overflow-y-auto pr-1", scrollable && "md:max-h-[calc(100vh-9rem)]")}>{children}</div>
       </div>
     </div>
   );

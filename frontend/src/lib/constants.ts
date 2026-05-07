@@ -19,12 +19,12 @@ export const statusOptions: Array<{ value: ReportStatus; label: string }> = [
 ];
 
 export const citizenNav: NavItem[] = [
-  { label: "Nueva denuncia", path: "/citizen/new-report", module: "citizen" },
-  { label: "Mis seguimientos", path: "/citizen/tracking", module: "citizen" },
+  { label: "Nueva denuncia", path: "/new-report", module: "citizen" },
+  { label: "Mis seguimientos", path: "/tracking", module: "citizen" },
 ];
 
 export const adminNav: NavItem[] = [
-  { label: "Dashboard", path: "/admin/dashboard", module: "admin" },
+  { label: "Dashboard", path: "/dashboard", module: "admin" },
   { label: "Banco", path: "/admin/reports", module: "admin" },
   { label: "Mapas", path: "/admin/heatmaps", module: "admin" },
   { label: "Analitica", path: "/admin/analytics", module: "admin" },
@@ -32,6 +32,9 @@ export const adminNav: NavItem[] = [
 ];
 
 export const navIcons = {
+  "/new-report": FilePlus2,
+  "/tracking": Files,
+  "/dashboard": LayoutDashboard,
   "/citizen/new-report": FilePlus2,
   "/citizen/tracking": Files,
   "/admin/dashboard": LayoutDashboard,

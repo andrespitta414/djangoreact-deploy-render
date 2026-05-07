@@ -1,8 +1,10 @@
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { ReportForm } from "@/components/ReportForm";
 import { useReports } from "@/hooks/useReports";
 
 export function CitizenNewReportPage() {
+  const [formKey, setFormKey] = useState(0);
   const { submitCreate } = useReports();
 
   return (
@@ -18,7 +20,7 @@ export function CitizenNewReportPage() {
         </div>
         <div className="rounded-[24px] border border-slate-200 bg-slate-950 p-4 text-white shadow-panel">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Resultado</p>
-          <p className="mt-2 text-sm font-medium text-slate-200">Mantuvimos el flujo guiado, pero con menos altura y mejor acceso al regreso.</p>
+          <p className="mt-2 text-sm font-medium text-slate-200">El tiempo de respuesta puede tardar entre 3 y 5 dias. Consulta la pagina oficial para hacer seguimiento.</p>
         </div>
       </section>
       <section className="grid gap-4">
@@ -38,11 +40,13 @@ export function CitizenNewReportPage() {
             </div>
           </div>
           <ReportForm
+            key={formKey}
             submitLabel="Enviar denuncia"
             onSubmit={async (values, files) => {
               const success = await submitCreate(values, files);
               if (success) {
                 toast.success("Tu denuncia fue enviada al banco central.");
+                setFormKey((currentKey) => currentKey + 1);
               }
             }}
           />

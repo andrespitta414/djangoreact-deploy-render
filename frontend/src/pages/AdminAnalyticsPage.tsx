@@ -19,9 +19,10 @@ export function AdminAnalyticsPage() {
               downloadCsv(
                 "reportes-ambientales.csv",
                 [
-                  ["ID", "Categoria", "Estado", "Latitud", "Longitud", "Anonima", "Fecha"],
+                  ["ID", "Nombre del caso", "Categoria", "Estado", "Latitud", "Longitud", "Anonima", "Fecha"],
                   ...reports.map((report) => [
                     report.identifier,
+                    report.title || report.category_label,
                     report.category_label,
                     report.status_label,
                     report.latitude ?? "",

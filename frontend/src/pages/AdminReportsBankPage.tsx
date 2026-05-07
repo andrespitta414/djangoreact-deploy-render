@@ -1,5 +1,6 @@
 import { Eye, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { EvidenceGallery } from "@/components/EvidenceGallery";
 import { Modal } from "@/components/Modal";
 import { ReportForm } from "@/components/ReportForm";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -117,9 +118,11 @@ export function AdminReportsBankPage() {
         title="Crear denuncia"
         subtitle="Operacion CRUD central"
         size="xl"
+        scrollable
       >
         <ReportForm
           mode="admin"
+          density="compact"
           submitLabel="Crear registro"
           onSubmit={async (values, files) => {
             const success = await submitCreate(values, files);
@@ -167,21 +170,29 @@ export function AdminReportsBankPage() {
 
       <Modal open={modal === "view" && Boolean(selectedReport)} onClose={() => setModal(null)} title="Detalle tecnico" subtitle={selectedReport?.identifier}>
         {selectedReport ? (
-          <div className="grid gap-6 lg:grid-cols-2">
-            <div className="rounded-3xl bg-slate-50 p-5">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Descripcion</p>
-              <h4 className="mt-2 text-xl font-semibold text-slate-900">{selectedReport.title}</h4>
-              <p className="mt-3 text-sm text-slate-600">{selectedReport.what_happened}</p>
-              <p className="mt-3 text-sm text-slate-500">{selectedReport.details}</p>
+          <div className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div className="rounded-3xl bg-slate-50 p-5">
+                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Descripcion</p>
+                <h4 className="mt-2 text-xl font-semibold text-slate-900">{selectedReport.title}</h4>
+                <p className="mt-3 text-sm text-slate-600">{selectedReport.what_happened}</p>
+                <p className="mt-3 text-sm text-slate-500">{selectedReport.details}</p>
+              </div>
+              <div className="rounded-3xl bg-slate-50 p-5">
+                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Meta</p>
+                <div className="mt-4 space-y-3 text-sm text-slate-600">
+                  <div className="font-mono">{selectedReport.identifier}</div>
+                  <div>{selectedReport.category_label}</div>
+                  <div>{selectedReport.when_happened}</div>
+                  <div className="font-mono">{selectedReport.latitude}, {selectedReport.longitude}</div>
+                  <div><StatusBadge status={selectedReport.status} /></div>
+                </div>
+              </div>
             </div>
             <div className="rounded-3xl bg-slate-50 p-5">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Meta</p>
-              <div className="mt-4 space-y-3 text-sm text-slate-600">
-                <div className="font-mono">{selectedReport.identifier}</div>
-                <div>{selectedReport.category_label}</div>
-                <div>{selectedReport.when_happened}</div>
-                <div className="font-mono">{selectedReport.latitude}, {selectedReport.longitude}</div>
-                <div><StatusBadge status={selectedReport.status} /></div>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Evidencia</p>
+              <div className="mt-4">
+                <EvidenceGallery assets={selectedReport.images} />
               </div>
             </div>
           </div>

@@ -171,8 +171,8 @@ export function ReportForm({
       </section>
 
       <div className={cn(
-        "z-20 flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white/95 px-4 py-4 shadow-sm backdrop-blur sm:flex-row sm:items-center sm:justify-between",
-        compact ? "sticky bottom-0" : "sticky bottom-4"
+        "relative z-10 flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white/95 px-4 py-4 shadow-sm backdrop-blur sm:flex-row sm:items-center sm:justify-between",
+        compact ? "md:sticky md:bottom-0" : "md:sticky md:bottom-4"
       )}>
         <p className="text-sm text-slate-500">Formulario optimizado para una captura mas corta, clara y facil de revisar.</p>
         <button
