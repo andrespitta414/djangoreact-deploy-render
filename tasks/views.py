@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Report
+from .models import Report, ReportImage
 from .serializer import ReportSerializer
 
 
@@ -32,6 +32,10 @@ class ReportViewSet(viewsets.ModelViewSet):
     serializer_class = ReportSerializer
     queryset = Report.objects.prefetch_related("images", "status_logs").all()
 
+    def _attach_files(self, report, request):
+        for file in request.FILES.getlist("uploaded_files"):
+            ReportImage.objects.create(report=report, file=file)
+
     def get_queryset(self):
         queryset = super().get_queryset()
         status_filter = self.request.query_params.get("status")
@@ -45,6 +49,30 @@ class ReportViewSet(viewsets.ModelViewSet):
         if anonymous_filter in {"true", "false"}:
             queryset = queryset.filter(is_anonymous=anonymous_filter == "true")
         return queryset
+
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+        data.pop("uploaded_files", None)
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        report = serializer.save()
+        self._attach_files(report, request)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            self.get_serializer(report).data,
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = request.data.copy()
+        data.pop("uploaded_files", None)
+        serializer = self.get_serializer(instance, data=data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        report = serializer.save()
+        self._attach_files(report, request)
+        return Response(self.get_serializer(report).data)
 
     @action(detail=False, methods=["get"])
     def analytics(self, request):

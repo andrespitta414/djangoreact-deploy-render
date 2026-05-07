@@ -4,6 +4,7 @@ Django settings for django_crud_api project.
 
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import dj_database_url
 
@@ -14,10 +15,30 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-*cs6hgv2y1c2y(!qkzd=48_!q6
 
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
+
+def parse_hosts(env_name: str, default: str) -> list[str]:
+    hosts = []
+    for value in os.getenv(env_name, default).split(","):
+        host = value.strip()
+        if not host:
+            continue
+        if "://" in host:
+            parsed = urlsplit(host)
+            host = parsed.netloc or parsed.path
+        host = host.split("/")[0]
+        if ":" in host and not host.startswith("."):
+            host = host.split(":", 1)[0]
+        if host:
+            hosts.append(host)
+    return hosts
+
+
 ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-    if host.strip()
+    host
+    for host in parse_hosts(
+        "ALLOWED_HOSTS",
+        "127.0.0.1,localhost,.ngrok-free.app,.ngrok-free.dev",
+    )
 ]
 
 render_hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME")
@@ -108,16 +129,24 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
 CORS_ALLOWED_ORIGINS = [
     origin.strip()
-    for origin in os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+    for origin in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
     if origin.strip()
 ]
+CORS_ALLOW_ALL_ORIGINS = False
 
 
 REST_FRAMEWORK = {

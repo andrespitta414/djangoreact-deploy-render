@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -45,3 +46,22 @@ class ReportApiTests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("other_category", response.data)
+
+    def test_create_attaches_all_uploaded_files(self):
+        payload = {
+            "title": "Caso con evidencia",
+            "category": Report.Category.WASTE,
+            "what_happened": "Se reportan residuos en un humedal.",
+            "when_happened": "5 de mayo de 2026",
+            "details": "Se adjuntan dos fotos del mismo punto.",
+            "uploaded_files": [
+                SimpleUploadedFile("evidencia-1.jpg", b"file-content-1", content_type="image/jpeg"),
+                SimpleUploadedFile("evidencia-2.jpg", b"file-content-2", content_type="image/jpeg"),
+            ],
+        }
+
+        response = self.client.post("/api/v1/reports/", payload, format="multipart")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        report = Report.objects.get(pk=response.data["id"])
+        self.assertEqual(report.images.count(), 2)
